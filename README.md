@@ -1,25 +1,16 @@
-# Express Mongo CRUD API
+# Express Middleware & Error Handling Demo
 
-A basic Express.js API that connects to MongoDB using Mongoose. It includes modular routing, middleware, and CRUD operations for users and messages.
-
-## 🚀 Features
-
-- Express.js web framework
-- MongoDB Atlas connection with Mongoose
-- Modular routing for `/users` and `/messages`
-- Basic logging middleware
-- Static file serving
-- Postman-ready routes for testing
-
-## 🧩 Technologies Used
-
-- Node.js
-- Express.js
-- MongoDB Atlas
-- Mongoose
-- Postman (for testing)
+This project demonstrates how to use **custom middleware** and **centralized error handling** in an Express.js application connected to **MongoDB Atlas** using Mongoose.
 
 ---
 
-## 📁 Folder Structure
+## 🚀 Features
+
+- ✅ Custom logger middleware to log HTTP requests
+- ✅ RESTful CRUD API for messages
+- ✅ Centralized error handler
+- ✅ Modular folder structure
+- ✅ `.env` environment configuration
+
+
 

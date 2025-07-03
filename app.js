@@ -11,6 +11,10 @@ mongoose
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
+//middleware
+const logger = require('./middleware/logger');
+app.use(logger);
+
 // Use the message routes
 const messageRoutes = require('./routes/messages');
 app.use('/messages', messageRoutes);
@@ -19,3 +23,13 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+
+
+//Error handling middleare 
+app.use((err, req, res, next) => {
+  console.log('Error:', err.stack);
+  res.status(500).json({error: "Internal Server Error"});
+})
+
+const morgan = require('morgan');
+app.use(morgan('dev'));
