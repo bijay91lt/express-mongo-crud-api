@@ -27,7 +27,14 @@ app.listen(PORT, () => {
 
 //Error handling middleare 
 app.use((err, req, res, next) => {
-  console.log('Error:', err.stack);
+
+  //Handle Joi validation errors
+  if(err.isJoi){
+    return res.status(400).json({error: err.details[0].message});
+  }
+
+  //Fallback for all other errors
+  console.error('Uncaught Error:', err.stack);
   res.status(500).json({error: "Internal Server Error"});
 })
 
