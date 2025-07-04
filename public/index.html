@@ -1,21 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset ="UTF-8" />
-        <meta name="viewport" content = "width=device-width, initial-scale=1.0" />
-        <title>Express Mongo App</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <div class="container">
-            <h1> Welcome to Express Mongo CRUD API</h1>
-            <p>This is a static homepage served using Express.</p>
-            <ul>
-                <li><strong>GET</strong> /user - View all users</li>
-                <li><strong>POST</strong> /users - Add a user</li>
-                <li><strong>POST</strong> /messages - Send a message</li>
-                <li><strong>GET</strong> /message/:sender -View messages by sender</li>
-            </ul>
-        </div>
-    </body>
-</html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Send Message</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Send a Message</h1>
+        <form id="messageForm">
+            <input type="text" id="sender" placeholder="Your Name" required />
+            <textarea name="" id="message" placeholder="Your message" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+        <p id="responseMsg"></p>
+    </div>
+
+    <script>
+        document.getElementById('messageForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const sender = document.getElementById('sender').value;
+            const message = document.getElementById('message').value;
+
+            const res = await fetch('/messages', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({sender, message})
+            });
+
+            const data = await res.json();
+            const msg = document.getElementById('responseMsg');
+            if(data.success){
+                msg.textContent = 'Message sent successfully';
+            } else {
+                msg.textContent = 'Error:' +(data.error || 'Something went wrong');
+            }
+
+            document.getElementById('messageForm').reset();
+        })
+    </script>
+</body>
