@@ -4,21 +4,18 @@ const asyncHandler = require('../utils/asyncHandler')
 
 // POST /messages
 exports.createMessage = asyncHandler(async (req, res, next) => {
-    //validate input
-        // const {error, value} = messageSchema.validate(req.body);
+    const{ sender, message } = req.body;
+    if(!sender || !message){
+        return res.status(400).json({error: 'Missing fields'});
+    }
 
-        // if(error){
-        //     return res.status(400).json({error: error.details[0].message});
-        // }
-
-        const value = await messageSchema.validateAsync(req.body);
-
-        //use validated date
-        const {sender, message} = value;
-        const newMsg = new Message({ sender, message });
-        await newMsg.save();
-
-        res.status(201).json({ success: true, message: newMsg });
+    try{
+        const newMsg = await Message.create({ sender, message});
+        res.status(201).json({success: true, message: newMsg});
+    } catch (err) {
+        console.error('Error saving message: ', err.message);
+        res.status(500).json({error: 'Failed to save message'});
+    }
 });
 
 // GET /messages/:sender
