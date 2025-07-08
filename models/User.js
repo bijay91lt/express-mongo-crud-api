@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema({
-    username : {type: String, require: true, unique: true}
-    password: { type: String, require: true}
+    email : {type: String, require: true, unique: true},
+    password : { type: String, require: true},
+    role: {type:String, enum: ['user', 'admin'], default: 'user'}
 });
 
 //Hash password before saving
@@ -17,4 +18,4 @@ userSchema. methods.comparePassword = function(plainPassword){
     return bcrypt.compare(plainPassword, this.password);
 };
 
-mmodule.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);
