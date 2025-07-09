@@ -3,6 +3,7 @@ const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const authorize = require('../middleware/authorize');
 const Message =  require('../models/Message');
+const requireAdmin = require('../middleware/role')
 const {
   createMessage,
   getMessagesBySender,
@@ -19,13 +20,6 @@ router.post('/', createMessage);
 router.put('/:id', updateMessage);
 
 //only admin can delete message
-router.delete('/:id', authMiddleware, authorize('admin'), async (req, res) => {
-  try{
-    await Message.findByIdAndDelete(req.params.id);
-    res.json({message: 'Deleted successfully'});
-  } catch (err) {
-    res.status(500).json({error: 'Error deleting'});
-  }
-});
+router.delete('/:id', authMiddleware, requireAdmin, deleteMessage);
 
 module.exports = router;
