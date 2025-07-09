@@ -3,19 +3,35 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs')
 
 exports.register = async (req, res) => {
-    const {email, password} = req.body;
-    try{
-        const user = await User.create({ email, password});
-        res.status(201).json({message: 'User created', user: user.email});
-    } catch (err){
-        res.status(400).json({ error: 'email already exists '});
+  try {
+    const { email, password, role } = req.body;
+    console.log("🔁 Registering:", email, role);
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      console.log("Already exists");
+      return res.status(400).json({ error: 'Email already exists' });
     }
+
+    const newUser = new User({ email, password, role });
+    const savedUser = await newUser.save();
+
+    console.log("User saved:", savedUser);
+    res.status(201).json({ message: 'User registered successfully' });
+
+  } catch (err) {
+    console.error("Register error:", err);
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  
   try {
+    const { email, password } = req.body;
+
+    if(!email || !password){
+      return res.status(401).json({error: 'Email and password are required'});
+    }
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ error: 'Invalid credentials' });
 
