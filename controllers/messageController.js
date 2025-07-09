@@ -13,8 +13,7 @@ exports.createMessage = asyncHandler(async (req, res, next) => {
         const newMsg = await Message.create({ sender, message});
         res.status(201).json({success: true, message: newMsg});
     } catch (err) {
-        console.error('Error saving message: ', err.message);
-        res.status(500).json({error: 'Failed to save message'});
+        next(error);
     }
 });
 

@@ -8,6 +8,11 @@ app.use(express.json());
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
 
+
+const errorHandler = require('./middleware/errorHandler')
+
+app.use(errorHandler);
+
 // Connect to MongoDB
 const connectDB = require('./config/db');
 connectDB();
